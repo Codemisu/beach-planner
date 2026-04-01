@@ -10,8 +10,10 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>openmeteo-module</module>
+        <module>weather
+            -module</module>
         <module>aemet-playas-module</module>
+        <module>weather-module</module>
     </modules>
 
     <properties>
