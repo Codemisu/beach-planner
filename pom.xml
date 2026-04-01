@@ -10,10 +10,12 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>weather
-            -module</module>
-        <module>aemet-playas-module</module>
+
+        <module>common</module>
+
         <module>weather-module</module>
+
+        <module>beachinfo-module</module>
     </modules>
 
     <properties>
