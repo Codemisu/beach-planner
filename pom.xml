@@ -11,7 +11,7 @@
 
     <modules>
         <module>openmeteo-module</module>
-        <module>aemet-playas-module</module>
+        <module>beachinfo-module</module>
     </modules>
 
     <properties>
