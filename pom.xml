@@ -10,7 +10,11 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>openmeteo-module</module>
+
+        <module>common</module>
+
+        <module>weather-module</module>
+
         <module>beachinfo-module</module>
     </modules>
 
