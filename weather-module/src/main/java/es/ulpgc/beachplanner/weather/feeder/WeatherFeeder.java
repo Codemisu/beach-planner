@@ -1,7 +1,8 @@
-package es.ulpgc.beachplanner.weather;
+package es.ulpgc.beachplanner.weather.feeder;
 
-public class Main {
-    public static void main(String[] args) {
-        System.out.println("Weather module started");
-    }
+import es.ulpgc.beachplanner.weather.domain.WeatherRecord;
+import java.util.List;
+
+public interface WeatherFeeder {
+    List<WeatherRecord> fetch();
 }
