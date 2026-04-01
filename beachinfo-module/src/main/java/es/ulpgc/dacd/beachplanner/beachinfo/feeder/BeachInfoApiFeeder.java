@@ -17,8 +17,9 @@ public class BeachInfoApiFeeder implements BeachInfoFeeder {
     }
 
     @Override
-    public List<BeachInfoRecord> fetch() {
+    public List<BeachInfoRecord> fetch() throws Exception {
         String json = apiClient.fetchBeachInfoJson();
+        System.out.println(json);
         return mapper.map(json);
     }
 }
