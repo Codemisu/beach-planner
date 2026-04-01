@@ -16,6 +16,7 @@
         <module>weather-module</module>
 
         <module>beachinfo-module</module>
+        <module>common</module>
     </modules>
 
     <properties>
