@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public class WeatherDatabase {
 
-    private static final String URL = "jdbc:sqlite:weather.db"; ///creo weather.db
+    private static final String URL = "jdbc:sqlite:weather-module/weather.db"; ///creo weather.db
 
     public Connection connect() throws SQLException {
         return DriverManager.getConnection(URL);
