@@ -1,8 +1,8 @@
-package es.ulpgc.dacd.beachplanner.beachinfo.controller;
+package es.ulpgc.dacd.beachplanner.beachinfo.app;
 
-import es.ulpgc.dacd.beachplanner.beachinfo.feeder.BeachInfoFeeder;
+import es.ulpgc.dacd.beachplanner.beachinfo.infrastructure.BeachInfoFeeder;
 import es.ulpgc.dacd.beachplanner.beachinfo.model.BeachInfoRecord;
-import es.ulpgc.dacd.beachplanner.beachinfo.serializer.BeachInfoSerializer;
+import es.ulpgc.dacd.beachplanner.beachinfo.infrastructure.BeachInfoSerializer;
 
 import java.util.List;
 
