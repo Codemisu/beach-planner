@@ -1,7 +1,6 @@
-package es.ulpgc.beachplanner.weather.controller;
+package es.ulpgc.beachplanner.weather.app;
 
-import es.ulpgc.beachplanner.weather.feeder.WeatherFeeder;
-import es.ulpgc.beachplanner.weather.repository.WeatherRepository;
+import es.ulpgc.beachplanner.weather.infrastructure.WeatherRepository;
 
 public class WeatherController {
     private final WeatherFeeder feeder;

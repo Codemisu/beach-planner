@@ -1,10 +1,10 @@
-package es.ulpgc.beachplanner.weather.domain;
+package es.ulpgc.beachplanner.weather.model;
 
 
 public class WeatherRecord {
     private String beachName;
     private String forecastTime;
-    private Double Temperature;
+    private Double temperature;
     private Double windSpeed;
     private String capturedAt;
 
@@ -14,7 +14,7 @@ public class WeatherRecord {
     public WeatherRecord(String beachName, String forecastTime, Double temperature, Double windSpeed, String capturedAt) {
         this.beachName = beachName;
         this.forecastTime = forecastTime;
-        this.Temperature = temperature;
+        this.temperature = temperature;
         this.windSpeed = windSpeed;
         this.capturedAt = capturedAt;
     }
@@ -36,11 +36,11 @@ public class WeatherRecord {
     }
 
     public Double getTemperature() {
-        return Temperature;
+        return temperature;
     }
 
-    public void setTemperature(Double Temperature) {
-        this.Temperature = Temperature;
+    public void setTemperature(Double temperature) {
+        this.temperature = temperature;
     }
 
     public Double getWindSpeed() {
