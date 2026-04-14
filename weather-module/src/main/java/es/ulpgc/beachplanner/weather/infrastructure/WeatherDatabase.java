@@ -1,4 +1,4 @@
-package es.ulpgc.beachplanner.weather.db;
+package es.ulpgc.beachplanner.weather.infrastructure;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

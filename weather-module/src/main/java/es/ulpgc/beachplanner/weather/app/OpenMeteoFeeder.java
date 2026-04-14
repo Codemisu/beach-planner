@@ -1,9 +1,9 @@
-package es.ulpgc.beachplanner.weather.feeder;
+package es.ulpgc.beachplanner.weather.app;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import es.ulpgc.beachplanner.weather.domain.Beach;
-import es.ulpgc.beachplanner.weather.domain.WeatherRecord;
+import es.ulpgc.beachplanner.weather.model.Beach;
+import es.ulpgc.beachplanner.weather.model.WeatherRecord;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;

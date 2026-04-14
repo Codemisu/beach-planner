@@ -1,4 +1,4 @@
-package es.ulpgc.beachplanner.weather.domain;
+package es.ulpgc.beachplanner.weather.model;
 
 
 public class WeatherRecord {

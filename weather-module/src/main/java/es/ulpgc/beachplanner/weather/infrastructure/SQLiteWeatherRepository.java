@@ -1,7 +1,6 @@
-package es.ulpgc.beachplanner.weather.repository;
+package es.ulpgc.beachplanner.weather.infrastructure;
 
-import es.ulpgc.beachplanner.weather.db.WeatherDatabase;
-import es.ulpgc.beachplanner.weather.domain.WeatherRecord;
+import es.ulpgc.beachplanner.weather.model.WeatherRecord;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
