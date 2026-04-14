@@ -17,5 +17,15 @@ public class SQLiteBeachInfoSerializer implements BeachInfoSerializer {
     public void save(List<BeachInfoRecord> records) {
         databaseManager.initializeDatabase();
         System.out.println("Saving " + records.size() + " beach info records...");
+
+        for (BeachInfoRecord record : records) {
+            System.out.println("Beach: " + record.getBeachName());
+            System.out.println("Prediction time: " + record.getPredictionTime());
+            System.out.println("Sky: " + record.getSkyState());
+            System.out.println("Wind: " + record.getWindState());
+            System.out.println("Wave: " + record.getWaveState());
+            System.out.println("Max temp: " + record.getMaxTemperature());
+            System.out.println("Captured at: " + record.getCapturedAt());
+        }
     }
 }
