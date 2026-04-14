@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.beachplanner.beachinfo.client;
+package es.ulpgc.dacd.beachplanner.beachinfo.infrastructure;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

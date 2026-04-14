@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.beachplanner.beachinfo.mapper;
+package es.ulpgc.dacd.beachplanner.beachinfo.infrastructure;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

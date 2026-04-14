@@ -1,7 +1,5 @@
-package es.ulpgc.dacd.beachplanner.beachinfo.feeder;
+package es.ulpgc.dacd.beachplanner.beachinfo.infrastructure;
 
-import es.ulpgc.dacd.beachplanner.beachinfo.client.BeachInfoApiClient;
-import es.ulpgc.dacd.beachplanner.beachinfo.mapper.BeachInfoMapper;
 import es.ulpgc.dacd.beachplanner.beachinfo.model.BeachInfoRecord;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package es.ulpgc.dacd.beachplanner.beachinfo.db;
+package es.ulpgc.dacd.beachplanner.beachinfo.infrastructure;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
