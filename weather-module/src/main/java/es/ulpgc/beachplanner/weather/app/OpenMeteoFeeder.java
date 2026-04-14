@@ -7,6 +7,7 @@ import es.ulpgc.beachplanner.weather.model.WeatherRecord;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import es.ulpgc.beachplanner.weather.infrastructure.WeatherMapper;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class OpenMeteoFeeder implements WeatherFeeder {
     private final OkHttpClient client = new OkHttpClient();
     private final ObjectMapper mapper = new ObjectMapper();
 
+    private final WeatherMapper weatherMapper = new WeatherMapper();
     @Override
     public List<WeatherRecord> fetch() {
         List<WeatherRecord> records = new ArrayList<>();
@@ -63,8 +65,8 @@ public class OpenMeteoFeeder implements WeatherFeeder {
             String capturedAt = LocalDateTime.now().toString(); ///extraempos los arrays
 
             for (int i = 0; i < times.size(); i++) {
-                records.add(new WeatherRecord(
-                        beach.name(),
+                records.add(weatherMapper.toWeatherRecord(
+                        beach,
                         times.get(i).asText(),
                         temperatures.get(i).asDouble(),
                         windSpeeds.get(i).asDouble(),
