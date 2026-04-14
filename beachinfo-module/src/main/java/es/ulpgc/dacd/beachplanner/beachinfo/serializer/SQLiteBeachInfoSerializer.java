@@ -4,6 +4,8 @@ import es.ulpgc.dacd.beachplanner.beachinfo.db.BeachInfoDatabaseManager;
 import es.ulpgc.dacd.beachplanner.beachinfo.model.BeachInfoRecord;
 
 import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 
 public class SQLiteBeachInfoSerializer implements BeachInfoSerializer {
 
@@ -16,16 +18,31 @@ public class SQLiteBeachInfoSerializer implements BeachInfoSerializer {
     @Override
     public void save(List<BeachInfoRecord> records) {
         databaseManager.initializeDatabase();
-        System.out.println("Saving " + records.size() + " beach info records...");
 
-        for (BeachInfoRecord record : records) {
-            System.out.println("Beach: " + record.getBeachName());
-            System.out.println("Prediction time: " + record.getPredictionTime());
-            System.out.println("Sky: " + record.getSkyState());
-            System.out.println("Wind: " + record.getWindState());
-            System.out.println("Wave: " + record.getWaveState());
-            System.out.println("Max temp: " + record.getMaxTemperature());
-            System.out.println("Captured at: " + record.getCapturedAt());
+        try (Connection conn = databaseManager.connect()) {
+
+            String sql = """
+            INSERT INTO beach_info 
+            (beach_name, prediction_time, sky, wind, wave, max_temp, captured_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        """;
+
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            for (BeachInfoRecord record : records) {
+                stmt.setString(1, record.getBeachName());
+                stmt.setString(2, record.getPredictionTime());
+                stmt.setString(3, record.getSkyState());
+                stmt.setString(4, record.getWindState());
+                stmt.setString(5, record.getWaveState());
+                stmt.setString(6, record.getMaxTemperature());
+                stmt.setString(7, record.getCapturedAt());
+
+                stmt.executeUpdate();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
