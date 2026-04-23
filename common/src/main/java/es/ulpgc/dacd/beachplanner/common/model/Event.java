@@ -1,13 +1,12 @@
 package es.ulpgc.dacd.beachplanner.common.model;
 
-import com.google.gson.JsonObject;
-
 public class Event {
+
     private String ts;
     private String ss;
-    private JsonObject payload;
+    private String payload;
 
-    public Event(String ts, String ss, JsonObject payload) {
+    public Event(String ts, String ss, String payload) {
         this.ts = ts;
         this.ss = ss;
         this.payload = payload;
@@ -21,7 +20,7 @@ public class Event {
         return ss;
     }
 
-    public JsonObject getPayload() {
+    public String getPayload() {
         return payload;
     }
 }
