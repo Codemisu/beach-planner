@@ -9,9 +9,7 @@ public class Main {
         WeatherFeeder feeder = new OpenMeteoFeeder();
         WeatherRepository repository = new SQLiteWeatherRepository();
 
-
         WeatherController controller = new WeatherController(feeder, repository);
-
 
         controller.run();
     }
