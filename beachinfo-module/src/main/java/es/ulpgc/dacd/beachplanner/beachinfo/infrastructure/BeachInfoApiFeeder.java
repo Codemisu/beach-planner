@@ -1,7 +1,11 @@
 package es.ulpgc.dacd.beachplanner.beachinfo.infrastructure;
 
+import com.google.gson.Gson;
 import es.ulpgc.dacd.beachplanner.beachinfo.model.BeachInfoRecord;
+import es.ulpgc.dacd.beachplanner.beachinfo.publisher.BeachInfoEventPublisher;
+import es.ulpgc.dacd.beachplanner.common.model.Event;
 
+import java.time.Instant;
 import java.util.List;
 
 public class BeachInfoApiFeeder implements BeachInfoFeeder {
@@ -16,8 +20,23 @@ public class BeachInfoApiFeeder implements BeachInfoFeeder {
 
     @Override
     public List<BeachInfoRecord> fetch() throws Exception {
+
         String json = apiClient.fetchBeachInfoJson();
+
         System.out.println(json.substring(0, Math.min(json.length(), 1000)));
+
+        Event event = new Event(
+                Instant.now().toString(),
+                "beachinfo-module",
+                json
+        );
+
+        Gson gson = new Gson();
+        String eventJson = gson.toJson(event);
+
+        BeachInfoEventPublisher publisher = new BeachInfoEventPublisher();
+        publisher.publish("BeachInfo", eventJson);
+
         return mapper.map(json);
     }
 }
