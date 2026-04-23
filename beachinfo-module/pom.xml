@@ -26,4 +26,9 @@
         </dependency>
     </dependencies>
 
+    <dependency>
+        <groupId>org.apache.activemq</groupId>
+        <artifactId>activemq-client</artifactId>
+        <version>5.15.12</version>
+    </dependency>
 </project>
