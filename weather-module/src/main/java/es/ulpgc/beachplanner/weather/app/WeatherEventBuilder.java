@@ -1,4 +1,5 @@
 package es.ulpgc.beachplanner.weather.app;
+
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
