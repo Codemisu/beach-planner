@@ -11,20 +11,31 @@ public class BeachInfoEventPublisher {
     private static final String BROKER_URL = "tcp://localhost:61616";
 
     public void publish(String topicName, String eventJson) throws Exception {
-        ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(BROKER_URL);
 
-        try (Connection connection = factory.createConnection()) {
-            connection.start();
+        ActiveMQConnectionFactory factory =
+                new ActiveMQConnectionFactory(BROKER_URL);
 
-            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            Destination destination = session.createTopic(topicName);
-            MessageProducer producer = session.createProducer(destination);
+        Connection connection = factory.createConnection();
 
-            TextMessage message = session.createTextMessage(eventJson);
-            producer.send(message);
+        connection.start();
 
-            producer.close();
-            session.close();
-        }
+        Session session =
+                connection.createSession(false,
+                        Session.AUTO_ACKNOWLEDGE);
+
+        Destination destination =
+                session.createTopic(topicName);
+
+        MessageProducer producer =
+                session.createProducer(destination);
+
+        TextMessage message =
+                session.createTextMessage(eventJson);
+
+        producer.send(message);
+
+        producer.close();
+        session.close();
+        connection.close();
     }
 }

@@ -21,8 +21,8 @@ public class BeachInfoApiFeeder implements BeachInfoFeeder {
     @Override
     public List<BeachInfoRecord> fetch() throws Exception {
 
+        //String json = "{\"beach\":\"Las Canteras\",\"state\":\"test\"}";
         String json = apiClient.fetchBeachInfoJson();
-
         System.out.println(json.substring(0, Math.min(json.length(), 1000)));
 
         Event event = new Event(
@@ -36,6 +36,7 @@ public class BeachInfoApiFeeder implements BeachInfoFeeder {
 
         BeachInfoEventPublisher publisher = new BeachInfoEventPublisher();
         publisher.publish("BeachInfo", eventJson);
+        System.out.println("Evento publicado en topic BeachInfo");
 
         return mapper.map(json);
     }
