@@ -3,7 +3,7 @@ package es.ulpgc.beachplanner.weather.app;
 import es.ulpgc.beachplanner.weather.infrastructure.WeatherRepository;
 import es.ulpgc.beachplanner.weather.infrastructure.WeatherPublisher;
 import es.ulpgc.beachplanner.weather.model.WeatherRecord;
-
+import es.ulpgc.dacd.beachplanner.common.model.Event;
 import java.util.List;
 import java.util.Map;
 
@@ -26,16 +26,8 @@ public class WeatherController {
 
         for (WeatherRecord record : records) {
             try {
-                Map<String, Object> event = eventBuilder.build(
-                        record.getBeachName(),
-                        record.getTemperature(),
-                        record.getWindSpeed(),
-                        0.0,
-                        "unknown"
-                );
-
+                Event event = eventBuilder.build(record);
                 publisher.publish(event);
-
             } catch (Exception e) {
                 e.printStackTrace();
             }

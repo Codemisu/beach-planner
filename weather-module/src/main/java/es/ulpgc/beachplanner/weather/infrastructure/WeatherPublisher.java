@@ -4,6 +4,8 @@ package es.ulpgc.beachplanner.weather.infrastructure;
 import com.google.gson.Gson;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
+import es.ulpgc.dacd.beachplanner.common.model.Event;
+
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.MessageProducer;
@@ -19,7 +21,8 @@ public class WeatherPublisher {
 
     private final Gson gson = new Gson();
 
-    public void publish(Map<String, Object> event) throws Exception {
+
+    public void publish(Event event) throws Exception {
         ConnectionFactory factory = new ActiveMQConnectionFactory(BROKER_URL);
         Connection connection = null;
         Session session = null;
