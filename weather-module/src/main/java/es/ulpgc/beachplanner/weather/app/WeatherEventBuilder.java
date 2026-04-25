@@ -10,8 +10,6 @@ import java.util.Map;
 
 public class WeatherEventBuilder {
 
-    private final Gson gson = new Gson();
-
     public Event build(WeatherRecord record) {
         Map<String, Object> payload = new HashMap<>();
 
@@ -24,7 +22,7 @@ public class WeatherEventBuilder {
         return new Event(
                 Instant.now().toString(),
                 "weather-module",
-                gson.toJson(payload)
+                payload
         );
     }
 }

@@ -4,9 +4,9 @@ public class Event {
 
     private String ts;
     private String ss;
-    private String payload;
+    private Object payload;
 
-    public Event(String ts, String ss, String payload) {
+    public Event(String ts, String ss, Object payload) {
         this.ts = ts;
         this.ss = ss;
         this.payload = payload;
@@ -20,7 +20,7 @@ public class Event {
         return ss;
     }
 
-    public String getPayload() {
+    public Object getPayload() {
         return payload;
     }
 }
