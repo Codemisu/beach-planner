@@ -1,32 +1,30 @@
 package es.ulpgc.beachplanner.weather.app;
 
+import com.google.gson.Gson;
+import es.ulpgc.dacd.beachplanner.common.model.Event;
+import es.ulpgc.beachplanner.weather.model.WeatherRecord;
+
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
 public class WeatherEventBuilder {
 
-    public Map<String, Object> build(
-            String beach,
-            double temperature,
-            double windSpeed,
-            double waveHeight,
-            String condition
-    ) {
-        Map<String, Object> event = new HashMap<>();
+    private final Gson gson = new Gson();
 
-        event.put("ts", Instant.now().toString());
-        event.put("ss", "weather-module");
-
+    public Event build(WeatherRecord record) {
         Map<String, Object> payload = new HashMap<>();
-        payload.put("beach", beach);
-        payload.put("temperature", temperature);
-        payload.put("windSpeed", windSpeed);
-        payload.put("waveHeight", waveHeight);
-        payload.put("condition", condition);
 
-        event.put("payload", payload);
+        payload.put("beach", record.getBeachName());
+        payload.put("forecastTime", record.getForecastTime());
+        payload.put("temperature", record.getTemperature());
+        payload.put("windSpeed", record.getWindSpeed());
+        payload.put("capturedAt", record.getCapturedAt());
 
-        return event;
+        return new Event(
+                Instant.now().toString(),
+                "weather-module",
+                gson.toJson(payload)
+        );
     }
 }
