@@ -1,18 +1,10 @@
 package es.ulpgc.beachplanner.weather.infrastructure;
 
-
 import com.google.gson.Gson;
+import es.ulpgc.dacd.beachplanner.common.model.Event;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
-import es.ulpgc.dacd.beachplanner.common.model.Event;
-
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.MessageProducer;
-import javax.jms.Session;
-import javax.jms.TextMessage;
-import javax.jms.Topic;
-import java.util.Map;
+import javax.jms.*;
 
 public class WeatherPublisher {
 
@@ -21,14 +13,13 @@ public class WeatherPublisher {
 
     private final Gson gson = new Gson();
 
+    private Connection connection;
+    private Session session;
+    private MessageProducer producer;
 
-    public void publish(Event event) throws Exception {
-        ConnectionFactory factory = new ActiveMQConnectionFactory(BROKER_URL);
-        Connection connection = null;
-        Session session = null;
-        MessageProducer producer = null;
-
+    public WeatherPublisher() {
         try {
+            ConnectionFactory factory = new ActiveMQConnectionFactory(BROKER_URL);
             connection = factory.createConnection();
             connection.start();
 
@@ -36,6 +27,13 @@ public class WeatherPublisher {
             Topic topic = session.createTopic(TOPIC_NAME);
             producer = session.createProducer(topic);
 
+        } catch (Exception e) {
+            throw new RuntimeException("Error initializing ActiveMQ publisher", e);
+        }
+    }
+
+    public void publish(Event event) {
+        try {
             String json = gson.toJson(event);
             TextMessage message = session.createTextMessage(json);
 
@@ -44,16 +42,18 @@ public class WeatherPublisher {
             System.out.println("Evento enviado a ActiveMQ:");
             System.out.println(json);
 
-        } finally {
-            if (producer != null) {
-                producer.close();
-            }
-            if (session != null) {
-                session.close();
-            }
-            if (connection != null) {
-                connection.close();
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void close() {
+        try {
+            if (producer != null) producer.close();
+            if (session != null) session.close();
+            if (connection != null) connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
