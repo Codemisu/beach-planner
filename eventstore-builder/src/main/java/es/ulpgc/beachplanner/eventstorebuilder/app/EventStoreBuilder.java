@@ -9,7 +9,6 @@ public class EventStoreBuilder {
 
     private static final String BROKER_URL = "tcp://localhost:61616";
     private static final String CLIENT_ID = "event-store-builder";
-    private static final String SUBSCRIPTION_NAME = "weather-events-subscription";
 
     private final String topicName;
     private final EventStoreWriter writer;
@@ -29,12 +28,18 @@ public class EventStoreBuilder {
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             Topic topic = session.createTopic(topicName);
 
-            MessageConsumer consumer = session.createDurableSubscriber(topic, SUBSCRIPTION_NAME);
+            MessageConsumer consumer = session.createDurableSubscriber(
+                    topic,
+                    topicName + "-events-subscription"
+            );
 
             consumer.setMessageListener(message -> {
                 try {
                     if (message instanceof TextMessage textMessage) {
                         String eventJson = textMessage.getText();
+
+                        System.out.println("Event received from topic: " + topicName);
+
                         writer.write(topicName, eventJson);
                     }
                 } catch (Exception e) {

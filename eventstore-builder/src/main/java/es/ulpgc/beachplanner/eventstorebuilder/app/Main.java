@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         EventStoreWriter writer = new EventStoreWriter();
 
-        EventStoreBuilder builder = new EventStoreBuilder("Weather", writer);
+        EventStoreBuilder builder = new EventStoreBuilder("BeachInfo", writer);
 
         builder.run();
     }
