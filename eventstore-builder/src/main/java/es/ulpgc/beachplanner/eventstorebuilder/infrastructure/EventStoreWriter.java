@@ -1,0 +1,47 @@
+package es.ulpgc.beachplanner.eventstorebuilder.infrastructure;
+
+import com.google.gson.Gson;
+import es.ulpgc.dacd.beachplanner.common.model.Event;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.time.Instant;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+
+public class EventStoreWriter {
+
+    private static final String ROOT = "eventstore";
+
+    private final Gson gson = new Gson();
+
+    public void write(String topic, String eventJson) throws IOException {
+
+        Event event = gson.fromJson(eventJson, Event.class);
+
+        String date = Instant.parse(event.getTs())
+                .atZone(ZoneOffset.UTC)
+                .format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+        Path directory = Path.of(
+                ROOT,
+                topic,
+                event.getSs()
+        );
+
+        Files.createDirectories(directory);
+
+        Path file = directory.resolve(date + ".events");
+
+        Files.writeString(
+                file,
+                eventJson + System.lineSeparator(),
+                StandardOpenOption.CREATE,
+                StandardOpenOption.APPEND
+        );
+
+        System.out.println("Event stored in: " + file);
+    }
+}

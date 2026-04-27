@@ -7,7 +7,7 @@ import java.net.URL;
 
 public class BeachInfoApiClient {
 
-    private static final String API_KEY = "...";
+    private static final String API_KEY = "API_KEY";
 
     public String fetchBeachInfoJson() throws Exception {
         String endpoint = "https://opendata.aemet.es/opendata/api/prediccion/especifica/playa/3501601/?api_key=" + API_KEY;
