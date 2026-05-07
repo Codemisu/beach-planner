@@ -14,9 +14,10 @@
         <module>common</module>
 
         <module>weather-module</module>
-
+        <module>business-unit</module>
         <module>beachinfo-module</module>
         <module>eventstore-builder</module>
+        <module>business-unit</module>
     </modules>
 
     <properties>
