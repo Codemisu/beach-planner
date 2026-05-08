@@ -7,7 +7,7 @@ import java.net.URL;
 
 public class BeachInfoApiClient {
 
-    private static final String API_KEY = "API_KEY";
+    private static final String API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYXJhLmNhcnJpem9zYTEwMUBhbHUudWxwZ2MuZXMiLCJqdGkiOiI4NDA3OGEyMi1kNzJhLTRiNDItODc3My01NGVmYTk2N2ViZDUiLCJpc3MiOiJBRU1FVCIsImlhdCI6MTc3NTA2NzU4NSwidXNlcklkIjoiODQwNzhhMjItZDcyYS00YjQyLTg3NzMtNTRlZmE5NjdlYmQ1Iiwicm9sZSI6IiJ9.LfLYLfZmwCa2Dnu-RfeEWRcueMh2JGRGZ6asgS_lwwk";
 
     public String fetchBeachInfoJson() throws Exception {
         String endpoint = "https://opendata.aemet.es/opendata/api/prediccion/especifica/playa/3501601/?api_key=" + API_KEY;
