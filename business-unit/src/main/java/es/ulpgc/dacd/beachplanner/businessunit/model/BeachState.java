@@ -35,4 +35,20 @@ public class BeachState {
     public int getOccupancy() {
         return occupancy;
     }
+
+    public void setTemperature(double temperature) {
+        this.temperature = temperature;
+    }
+
+    public void setWind(double wind) {
+        this.wind = wind;
+    }
+
+    public void setWaves(double waves) {
+        this.waves = waves;
+    }
+
+    public void setOccupancy(int occupancy) {
+        this.occupancy = occupancy;
+    }
 }
