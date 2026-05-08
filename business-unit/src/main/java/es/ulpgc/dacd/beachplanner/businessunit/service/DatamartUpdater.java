@@ -11,7 +11,7 @@ public class DatamartUpdater {
     private final Gson gson = new Gson();
 
     public void update(Event event, Datamart datamart) {
-
+        System.out.println("EVENT SOURCE RECEIVED: " + event.getSs());
         if (event.getSs().equals("weather-module")) {
 
             JsonObject payload =
