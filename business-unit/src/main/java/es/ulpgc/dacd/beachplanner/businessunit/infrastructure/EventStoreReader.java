@@ -52,7 +52,7 @@ public class EventStoreReader {
 
                     try {
 
-                        System.out.println("LINE -> " + line);
+
 
                         Event event = gson.fromJson(line, Event.class);
 

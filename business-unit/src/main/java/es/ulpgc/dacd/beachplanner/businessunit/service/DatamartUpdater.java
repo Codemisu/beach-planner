@@ -11,22 +11,33 @@ public class DatamartUpdater {
 
     public void update(Event event, Datamart datamart) {
 
-        JsonObject payload = gson.fromJson(
-                event.getPayload().toString(),
-                JsonObject.class
-        );        System.out.println(payload);
-
-        if (event.getSs().equals("weather-module")) {
-
-            String beach = payload.get("beach").getAsString();
-
-            double wind = payload.get("windSpeed").getAsDouble();
-
-            BeachState state = datamart.get(beach);
-
-            if (state != null) {
-                state.setWind(wind);
-            }
+        if (!event.getSs().equals("weather-module")) {
+            return;
         }
+
+        JsonObject payload = gson.toJsonTree(event.getPayload()).getAsJsonObject();
+
+        String beach = payload.get("beach").getAsString();
+        double wind = payload.get("windSpeed").getAsDouble();
+        double temperature = payload.get("temperature").getAsDouble();
+
+        BeachState state = datamart.get(beach);
+
+        if (state == null) {
+            state = new BeachState(
+                    beach,
+                    temperature,
+                    wind,
+                    0,
+                    0
+            );
+
+            datamart.update(state);
+        } else {
+            state.setTemperature(temperature);
+            state.setWind(wind);
+        }
+
+        System.out.println("Updated datamart: " + beach);
     }
 }
