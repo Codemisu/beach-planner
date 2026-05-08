@@ -4,14 +4,30 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.io.InputStream;
+import java.util.Properties;
 
 public class BeachInfoApiClient {
 
-    private static final String API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzYXJhLmNhcnJpem9zYTEwMUBhbHUudWxwZ2MuZXMiLCJqdGkiOiIzODEwYTAyNy0yYWYwLTRhNmEtODg3My1jMTNiOTgyM2M0MTkiLCJpc3MiOiJBRU1FVCIsImlhdCI6MTc3ODI3MjY0OCwidXNlcklkIjoiMzgxMGEwMjctMmFmMC00YTZhLTg4NzMtYzEzYjk4MjNjNDE5Iiwicm9sZSI6IiJ9.MA_IVHZcxr6X4mgXUHSjKvmAwg0wDIxZroR3ChQlJmI";
+    private String getApiKey() throws Exception {
+        Properties properties = new Properties();
 
+        InputStream input = getClass()
+                .getClassLoader()
+                .getResourceAsStream("config.properties");
+
+        if (input == null) {
+            throw new RuntimeException("config.properties not found");
+        }
+
+        properties.load(input);
+
+        return properties.getProperty("api.key");
+    }
     public String fetchBeachInfoJson() throws Exception {
-        String endpoint = "https://opendata.aemet.es/opendata/api/prediccion/especifica/playa/3501601/?api_key=" + API_KEY;
+        String apiKey = getApiKey();
 
+        String endpoint = "https://opendata.aemet.es/opendata/api/prediccion/especifica/playa/3501601/?api_key=" + apiKey;
         // PRIMERA LLAMADA
         HttpURLConnection conn1 = (HttpURLConnection) new URL(endpoint).openConnection();
         conn1.setRequestMethod("GET");
