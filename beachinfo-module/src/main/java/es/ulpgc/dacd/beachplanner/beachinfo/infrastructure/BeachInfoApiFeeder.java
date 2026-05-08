@@ -22,7 +22,14 @@ public class BeachInfoApiFeeder implements BeachInfoFeeder {
     public List<BeachInfoRecord> fetch() throws Exception {
 
         //String json = "{\"beach\":\"Las Canteras\",\"state\":\"test\"}";
-        String json = apiClient.fetchBeachInfoJson();
+        String json;
+
+        try {
+            json = apiClient.fetchBeachInfoJson();
+        } catch (Exception e) {
+            System.out.println("Error fetching AEMET beach data: " + e.getMessage());
+            return List.of();
+        }
         System.out.println(json.substring(0, Math.min(json.length(), 1000)));
 
         Event event = new Event(

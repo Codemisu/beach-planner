@@ -11,8 +11,6 @@ public class DatamartUpdater {
     private final Gson gson = new Gson();
 
     public void update(Event event, Datamart datamart) {
-        System.out.println("EVENT SOURCE RECEIVED: " + event.getSs());
-        System.out.println("Timestamp: " + event.getTs());
         if (event.getSs().equals("weather-module")) {
 
             JsonObject payload =
@@ -47,8 +45,7 @@ public class DatamartUpdater {
                 state.setWind(wind);
             }
 
-            System.out.println("Updated weather datamart: " + beach);
-        }
+            System.out.println("Datamart updated: " + beach + " (weather)");        }
 
         if (event.getSs().equals("beachinfo-module")) {
 
@@ -98,8 +95,7 @@ public class DatamartUpdater {
             state.setUvIndex(uvIndex);
             state.setWaterTemperature(waterTemperature);
 
-            System.out.println("Updated beach info datamart: " + beach);
-
+            System.out.println("Datamart updated: " + beach + " (beach info)");
             return;
         }
     }
