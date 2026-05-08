@@ -3,10 +3,13 @@ package es.ulpgc.dacd.beachplanner.businessunit.model;
 public class BeachState {
 
     private String beach;
+
     private double temperature;
     private double wind;
+
     private double waves;
     private int occupancy;
+
     private String skyState;
     private String waveState;
     private int uvIndex;
@@ -18,6 +21,10 @@ public class BeachState {
         this.wind = wind;
         this.waves = waves;
         this.occupancy = occupancy;
+        this.skyState = "no disponible";
+        this.waveState = "no disponible";
+        this.uvIndex = 0;
+        this.waterTemperature = 0;
     }
 
     public String getBeach() {
@@ -40,6 +47,22 @@ public class BeachState {
         return occupancy;
     }
 
+    public String getSkyState() {
+        return skyState;
+    }
+
+    public String getWaveState() {
+        return waveState;
+    }
+
+    public int getUvIndex() {
+        return uvIndex;
+    }
+
+    public double getWaterTemperature() {
+        return waterTemperature;
+    }
+
     public void setTemperature(double temperature) {
         this.temperature = temperature;
     }
@@ -56,35 +79,34 @@ public class BeachState {
         this.occupancy = occupancy;
     }
 
-    public String getSkyState() {
-        return skyState;
-    }
-
     public void setSkyState(String skyState) {
         this.skyState = skyState;
-    }
-
-    public String getWaveState() {
-        return waveState;
     }
 
     public void setWaveState(String waveState) {
         this.waveState = waveState;
     }
 
-    public int getUvIndex() {
-        return uvIndex;
-    }
-
     public void setUvIndex(int uvIndex) {
         this.uvIndex = uvIndex;
     }
 
-    public double getWaterTemperature() {
-        return waterTemperature;
-    }
-
     public void setWaterTemperature(double waterTemperature) {
         this.waterTemperature = waterTemperature;
+    }
+
+    @Override
+    public String toString() {
+        return "BeachState{" +
+                "beach='" + beach + '\'' +
+                ", temperature=" + temperature +
+                ", wind=" + wind +
+                ", waves=" + waves +
+                ", occupancy=" + occupancy +
+                ", skyState='" + skyState + '\'' +
+                ", waveState='" + waveState + '\'' +
+                ", uvIndex=" + uvIndex +
+                ", waterTemperature=" + waterTemperature +
+                '}';
     }
 }
