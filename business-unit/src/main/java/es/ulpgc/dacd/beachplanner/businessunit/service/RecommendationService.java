@@ -63,6 +63,10 @@ public class RecommendationService {
                 .append(state.getWind())
                 .append(" km/h\n");
 
+        if (state.getWind() > 25) {
+            result.append("- Aviso: viento fuerte, precaución con sombrillas y toallas\n");
+        }
+
         if (hasWaveData(state)) {
             result.append("- Oleaje: ")
                     .append(state.getWaveState())
@@ -83,11 +87,23 @@ public class RecommendationService {
                     .append("\n");
         }
 
+        if (state.getUvIndex() >= 8) {
+            result.append("- Recomendación: usar protección solar alta\n");
+        }
+
         if (state.getOccupancy() > 0) {
             result.append("- Ocupación: ")
                     .append(state.getOccupancy())
                     .append("%\n");
         }
+
+        if (state.getOccupancy() > 85) {
+            result.append("- Playa muy ocupada\n");
+        }
+
+        result.append("- Última actualización: ")
+                .append(java.time.LocalDateTime.now())
+                .append("\n");
 
         return result.toString();
     }

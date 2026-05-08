@@ -12,6 +12,7 @@ public class DatamartUpdater {
 
     public void update(Event event, Datamart datamart) {
         System.out.println("EVENT SOURCE RECEIVED: " + event.getSs());
+        System.out.println("Timestamp: " + event.getTs());
         if (event.getSs().equals("weather-module")) {
 
             JsonObject payload =
