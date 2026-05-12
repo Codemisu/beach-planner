@@ -6,7 +6,7 @@ import es.ulpgc.dacd.beachplanner.businessunit.service.Datamart;
 import es.ulpgc.dacd.beachplanner.businessunit.service.DatamartUpdater;
 import es.ulpgc.dacd.beachplanner.businessunit.service.RecommendationService;
 import es.ulpgc.dacd.beachplanner.common.model.Event;
-
+import java.util.Scanner;
 import javax.jms.JMSException;
 import java.util.List;
 
@@ -30,8 +30,36 @@ public class Main {
         for (Event event : historicalEvents) {
             updater.update(event, datamart);
         }
+        Scanner scanner = new Scanner(System.in);
 
-        printRecommendations(datamart, recommendationService);
+        System.out.println("\nSeleccione una playa:");
+        System.out.println("1. Las Canteras");
+        System.out.println("2. Las Alcaravaneras");
+        System.out.println("3. La Laja");
+
+        String option = scanner.nextLine();
+
+        String selectedBeach;
+
+        switch (option) {
+            case "1":
+                selectedBeach = "Las Canteras";
+                break;
+            case "2":
+                selectedBeach = "Las Alcaravaneras";
+                break;
+            case "3":
+                selectedBeach = "La Laja";
+                break;
+            default:
+                selectedBeach = "Las Canteras";
+        }
+
+        printRecommendation(
+                datamart,
+                recommendationService,
+                selectedBeach
+        );
 
         ActiveMQConsumer weatherConsumer =
                 new ActiveMQConsumer(BROKER_URL, WEATHER_TOPIC);
@@ -43,7 +71,11 @@ public class Main {
             weatherEventsReceived[0]++;
 
             if (weatherEventsReceived[0] % 72 == 0) {
-                printRecommendations(datamart, recommendationService);
+                printRecommendation(
+                        datamart,
+                        recommendationService,
+                        selectedBeach
+                );
             }
         });
 
@@ -52,7 +84,12 @@ public class Main {
 
         beachInfoConsumer.start(event -> {
             updater.update(event, datamart);
-            printRecommendations(datamart, recommendationService);
+
+            printRecommendation(
+                    datamart,
+                    recommendationService,
+                    selectedBeach
+            );
         });
 
         System.out.println("Business Unit is running...");
@@ -60,21 +97,24 @@ public class Main {
     }
 
 
-
-    private static void printRecommendations(
+    private static void printRecommendation(
             Datamart datamart,
-            RecommendationService recommendationService
+            RecommendationService recommendationService,
+            String beach
     ) {
 
         System.out.println("\n===== BEACH PLANNER RECOMMENDATIONS =====");
 
-        for (BeachState state : datamart.getAll().values()) {
-
-            String recommendation = recommendationService.recommend(state);
-
-            System.out.println("\n-----------------------------------");
-            System.out.println("Playa: " + state.getBeach());
-            System.out.println(recommendation);
+        BeachState state = datamart.get(beach);
+        if (state == null) {
+            System.out.println("No hay datos disponibles para " + beach);
+            return;
         }
+
+        String recommendation = recommendationService.recommend(state);
+
+        System.out.println("\n-----------------------------------");
+        System.out.println("Playa: " + state.getBeach());
+        System.out.println(recommendation);
     }
 }
