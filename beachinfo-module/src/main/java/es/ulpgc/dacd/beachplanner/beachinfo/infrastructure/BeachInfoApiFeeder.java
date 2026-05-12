@@ -1,27 +1,31 @@
 package es.ulpgc.dacd.beachplanner.beachinfo.infrastructure;
 
-import com.google.gson.Gson;
 import es.ulpgc.dacd.beachplanner.beachinfo.model.BeachInfoRecord;
+import es.ulpgc.dacd.beachplanner.beachinfo.publisher.BeachInfoEventFactory;
 import es.ulpgc.dacd.beachplanner.beachinfo.publisher.BeachInfoEventPublisher;
 import es.ulpgc.dacd.beachplanner.common.model.Event;
-
-import java.time.Instant;
 import java.util.List;
 
 public class BeachInfoApiFeeder implements BeachInfoFeeder {
 
     private final BeachInfoApiClient apiClient;
     private final BeachInfoMapper mapper;
+    private final BeachInfoEventFactory eventFactory;
 
-    public BeachInfoApiFeeder(BeachInfoApiClient apiClient, BeachInfoMapper mapper) {
+    private final BeachInfoEventPublisher publisher;
+    public BeachInfoApiFeeder(BeachInfoApiClient apiClient,
+                              BeachInfoMapper mapper,
+                              BeachInfoEventFactory eventFactory,
+                              BeachInfoEventPublisher publisher) {
         this.apiClient = apiClient;
         this.mapper = mapper;
+        this.eventFactory = eventFactory;
+        this.publisher = publisher;
     }
 
     @Override
     public List<BeachInfoRecord> fetch() throws Exception {
 
-        //String json = "{\"beach\":\"Las Canteras\",\"state\":\"test\"}";
         String json;
 
         try {
@@ -30,20 +34,14 @@ public class BeachInfoApiFeeder implements BeachInfoFeeder {
             System.out.println("Error fetching AEMET beach data: " + e.getMessage());
             return List.of();
         }
-        System.out.println(json.substring(0, Math.min(json.length(), 1000)));
 
-        Event event = new Event(
-                Instant.now().toString(),
-                "beachinfo-module",
-                json
-        );
+        BeachInfoEventFactory eventFactory =
+                new BeachInfoEventFactory();
 
-        Gson gson = new Gson();
-        String eventJson = gson.toJson(event);
+        Event event = eventFactory.create(json);
 
         BeachInfoEventPublisher publisher = new BeachInfoEventPublisher();
-        publisher.publish("BeachInfo", eventJson);
-        System.out.println("Evento publicado en topic BeachInfo");
+        publisher.publish("BeachInfo", event);
 
         return mapper.map(json);
     }

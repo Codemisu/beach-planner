@@ -6,11 +6,17 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import org.apache.activemq.ActiveMQConnectionFactory;
+import es.ulpgc.dacd.beachplanner.common.model.Event;
+import com.google.gson.Gson;
+
 public class BeachInfoEventPublisher {
 
     private static final String BROKER_URL = "tcp://localhost:61616";
 
-    public void publish(String topicName, String eventJson) throws Exception {
+    public void publish(String topicName, Event event) throws Exception {
+        Gson gson = new Gson();
+
+        String eventJson = gson.toJson(event);
 
         ActiveMQConnectionFactory factory =
                 new ActiveMQConnectionFactory(BROKER_URL);
