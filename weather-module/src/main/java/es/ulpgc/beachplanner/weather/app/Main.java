@@ -6,7 +6,8 @@ import es.ulpgc.beachplanner.weather.infrastructure.WeatherRepository;
 public class Main {
     public static void main(String[] args) {
 
-        WeatherFeeder feeder = new OpenMeteoFeeder();
+        BeachProvider beachProvider = new BeachProvider();
+        WeatherFeeder feeder = new OpenMeteoFeeder(beachProvider);
         WeatherRepository repository = new SQLiteWeatherRepository();
 
         WeatherController controller = new WeatherController(feeder, repository);

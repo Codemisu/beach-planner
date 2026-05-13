@@ -8,7 +8,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import es.ulpgc.beachplanner.weather.infrastructure.WeatherMapper;
-
+import es.ulpgc.beachplanner.weather.infrastructure.OpenMeteoUrlBuilder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,21 +17,21 @@ public class OpenMeteoFeeder implements WeatherFeeder {
 
     private final OkHttpClient client = new OkHttpClient();
     private final ObjectMapper mapper = new ObjectMapper();
-
     private final WeatherMapper weatherMapper = new WeatherMapper();
+    private final BeachProvider beachProvider;
+    private final OpenMeteoUrlBuilder urlBuilder = new OpenMeteoUrlBuilder();
+
+    public OpenMeteoFeeder(BeachProvider beachProvider) {
+        this.beachProvider = beachProvider;
+    }
+
     @Override
     public List<WeatherRecord> fetch() {
         List<WeatherRecord> records = new ArrayList<>();
 
-        List<Beach> beaches = List.of(
-                new Beach("Las Canteras", 28.1413, -15.4366),
-                new Beach("Las Alcaravaneras", 28.1316, -15.4303),
-                new Beach("La Laja", 28.0606, -15.4140)
-        );
-
-        for (Beach beach : beaches) {
+        for (Beach beach : beachProvider.getBeaches()) {
             records.addAll(fetchBeachWeather(beach));
-        } ///para cada playa llamas api, recoges daatos, y añades a la lista final
+        }
 
         return records;
     }
@@ -39,11 +39,7 @@ public class OpenMeteoFeeder implements WeatherFeeder {
     private List<WeatherRecord> fetchBeachWeather(Beach beach) {
         List<WeatherRecord> records = new ArrayList<>();
 
-        String url = "https://api.open-meteo.com/v1/forecast" ///construyes la url
-                + "?latitude=" + beach.latitude()
-                + "&longitude=" + beach.longitude()
-                + "&hourly=temperature_2m,wind_speed_10m"
-                + "&forecast_days=1";
+        String url = urlBuilder.buildFor(beach);
 
         Request request = new Request.Builder() ///petición http
                 .url(url)
