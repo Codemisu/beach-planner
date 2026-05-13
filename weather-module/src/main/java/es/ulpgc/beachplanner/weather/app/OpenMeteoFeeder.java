@@ -13,16 +13,27 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class OpenMeteoFeeder implements WeatherFeeder {
 
-    private final OkHttpClient client = new OkHttpClient();
-    private final ObjectMapper mapper = new ObjectMapper();
-    private final WeatherMapper weatherMapper = new WeatherMapper();
+    private final OkHttpClient client;
+    private final ObjectMapper mapper;
+    private final WeatherMapper weatherMapper;
     private final BeachProvider beachProvider;
-    private final OpenMeteoUrlBuilder urlBuilder = new OpenMeteoUrlBuilder();
+    private final OpenMeteoUrlBuilder urlBuilder;
 
-    public OpenMeteoFeeder(BeachProvider beachProvider) {
+    public OpenMeteoFeeder(
+            BeachProvider beachProvider,
+            OkHttpClient client,
+            ObjectMapper mapper,
+            WeatherMapper weatherMapper,
+            OpenMeteoUrlBuilder urlBuilder
+    ) {
         this.beachProvider = beachProvider;
+        this.client = client;
+        this.mapper = mapper;
+        this.weatherMapper = weatherMapper;
+        this.urlBuilder = urlBuilder;
     }
 
     @Override

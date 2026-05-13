@@ -1,17 +1,21 @@
 package es.ulpgc.beachplanner.weather.infrastructure;
 
 import com.google.gson.Gson;
+import es.ulpgc.beachplanner.weather.app.WeatherEventBuilder;
+import es.ulpgc.beachplanner.weather.app.WeatherEventPublisher;
+import es.ulpgc.beachplanner.weather.model.WeatherRecord;
 import es.ulpgc.dacd.beachplanner.common.model.Event;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import javax.jms.*;
 
-public class WeatherPublisher {
+public class WeatherPublisher implements WeatherEventPublisher {
 
     private static final String BROKER_URL = "tcp://localhost:61616";
     private static final String TOPIC_NAME = "Weather";
 
     private final Gson gson = new Gson();
+    private final WeatherEventBuilder eventBuilder = new WeatherEventBuilder();
 
     private Connection connection;
     private Session session;
@@ -32,8 +36,10 @@ public class WeatherPublisher {
         }
     }
 
-    public void publish(Event event) {
+    @Override
+    public void publish(WeatherRecord record) {
         try {
+            Event event = eventBuilder.build(record);
             String json = gson.toJson(event);
             TextMessage message = session.createTextMessage(json);
 
@@ -47,6 +53,7 @@ public class WeatherPublisher {
         }
     }
 
+    @Override
     public void close() {
         try {
             if (producer != null) producer.close();
