@@ -21,14 +21,21 @@ public class WeatherController {
     }
 
     public void run() {
-        List<WeatherRecord> records = feeder.fetch();
+        try {
+            List<WeatherRecord> records = feeder.fetch();
 
-        repository.saveAll(records);
+            repository.saveAll(records);
 
+            publish(records);
+
+        } finally {
+            publisher.close();
+        }
+    }
+
+    private void publish(List<WeatherRecord> records) {
         for (WeatherRecord record : records) {
             publisher.publish(record);
         }
-
-        publisher.close();
     }
 }

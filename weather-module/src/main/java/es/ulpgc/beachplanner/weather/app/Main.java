@@ -1,6 +1,7 @@
 package es.ulpgc.beachplanner.weather.app;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import es.ulpgc.beachplanner.weather.infrastructure.OpenMeteoResponseParser;
 import es.ulpgc.beachplanner.weather.infrastructure.OpenMeteoUrlBuilder;
 import es.ulpgc.beachplanner.weather.infrastructure.SQLiteWeatherRepository;
 import es.ulpgc.beachplanner.weather.infrastructure.WeatherMapper;
@@ -13,15 +14,20 @@ public class Main {
 
         BeachProvider beachProvider = new BeachProvider();
 
+        OpenMeteoResponseParser responseParser = new OpenMeteoResponseParser(
+                new ObjectMapper(),
+                new WeatherMapper()
+        );
+
         WeatherFeeder feeder = new OpenMeteoFeeder(
                 beachProvider,
                 new OkHttpClient(),
-                new ObjectMapper(),
-                new WeatherMapper(),
-                new OpenMeteoUrlBuilder()
+                new OpenMeteoUrlBuilder(),
+                responseParser
         );
 
         WeatherRepository repository = new SQLiteWeatherRepository();
+
         WeatherEventPublisher publisher = new WeatherPublisher();
 
         WeatherController controller = new WeatherController(

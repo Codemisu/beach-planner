@@ -13,11 +13,11 @@ public class WeatherEventBuilder {
     public Event build(WeatherRecord record) {
         Map<String, Object> payload = new HashMap<>();
 
-        payload.put("beach", record.getBeachName());
-        payload.put("forecastTime", record.getForecastTime());
-        payload.put("temperature", record.getTemperature());
-        payload.put("windSpeed", record.getWindSpeed());
-        payload.put("capturedAt", record.getCapturedAt());
+        payload.put("beach", record.beachName());
+        payload.put("forecastTime", record.forecastTime());
+        payload.put("temperature", record.temperature());
+        payload.put("windSpeed", record.windSpeed());
+        payload.put("capturedAt", record.capturedAt());
 
         return new Event(
                 Instant.now().toString(),

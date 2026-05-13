@@ -33,11 +33,11 @@ public class SQLiteWeatherRepository implements WeatherRepository {
 
             for (WeatherRecord record : records) {
                 ///inserta en los ? de values arriba cada cosa que queremos añadir
-                statement.setString(1, record.getBeachName()); ///mete el nombre de la playa en el primer ?
-                statement.setString(2, record.getForecastTime());
-                statement.setDouble(3, record.getTemperature());
-                statement.setDouble(4, record.getWindSpeed());
-                statement.setString(5, record.getCapturedAt());
+                statement.setString(1, record.beachName());
+                statement.setString(2, record.forecastTime());
+                statement.setDouble(3, record.temperature());
+                statement.setDouble(4, record.windSpeed());
+                statement.setString(5, record.capturedAt());
                 statement.addBatch(); ///no guarda en base de datos aun, le dice que lo guarde luego
             }
 
