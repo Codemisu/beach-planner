@@ -6,17 +6,12 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import org.apache.activemq.ActiveMQConnectionFactory;
-import es.ulpgc.dacd.beachplanner.common.model.Event;
-import com.google.gson.Gson;
 
 public class BeachInfoEventPublisher {
 
     private static final String BROKER_URL = "tcp://localhost:61616";
 
-    public void publish(String topicName, Event event) throws Exception {
-        Gson gson = new Gson();
-
-        String eventJson = gson.toJson(event);
+    public void publish(String topicName, String message) throws Exception {
 
         ActiveMQConnectionFactory factory =
                 new ActiveMQConnectionFactory(BROKER_URL);
@@ -35,10 +30,10 @@ public class BeachInfoEventPublisher {
         MessageProducer producer =
                 session.createProducer(destination);
 
-        TextMessage message =
-                session.createTextMessage(eventJson);
+        TextMessage textMessage =
+                session.createTextMessage(message);
 
-        producer.send(message);
+        producer.send(textMessage);
 
         producer.close();
         session.close();

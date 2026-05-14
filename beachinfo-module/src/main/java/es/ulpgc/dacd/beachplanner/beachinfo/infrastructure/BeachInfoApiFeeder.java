@@ -5,6 +5,7 @@ import es.ulpgc.dacd.beachplanner.beachinfo.publisher.BeachInfoEventFactory;
 import es.ulpgc.dacd.beachplanner.beachinfo.publisher.BeachInfoEventPublisher;
 import es.ulpgc.dacd.beachplanner.common.model.Event;
 import java.util.List;
+import com.google.gson.Gson;
 
 public class BeachInfoApiFeeder implements BeachInfoFeeder {
 
@@ -35,13 +36,13 @@ public class BeachInfoApiFeeder implements BeachInfoFeeder {
             return List.of();
         }
 
-        BeachInfoEventFactory eventFactory =
-                new BeachInfoEventFactory();
-
         Event event = eventFactory.create(json);
 
-        BeachInfoEventPublisher publisher = new BeachInfoEventPublisher();
-        publisher.publish("BeachInfo", event);
+        Gson gson = new Gson();
+
+        String eventJson = gson.toJson(event);
+
+        publisher.publish("BeachInfo", eventJson);
 
         return mapper.map(json);
     }
