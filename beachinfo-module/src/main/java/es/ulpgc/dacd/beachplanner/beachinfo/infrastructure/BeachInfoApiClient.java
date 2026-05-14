@@ -24,64 +24,69 @@ public class BeachInfoApiClient {
 
         return properties.getProperty("api.key");
     }
-    public String fetchBeachInfoJson() throws Exception {
-        String apiKey = getApiKey();
 
-        String endpoint = "https://opendata.aemet.es/opendata/api/prediccion/especifica/playa/3501601/?api_key=" + apiKey;
-        // PRIMERA LLAMADA
-        HttpURLConnection conn1 = (HttpURLConnection) new URL(endpoint).openConnection();
-        conn1.setRequestMethod("GET");
+    private String fetchResponse(String endpoint) throws Exception {
+        HttpURLConnection connection =
+                (HttpURLConnection) new URL(endpoint).openConnection();
 
-        BufferedReader reader1 = new BufferedReader(
-                new InputStreamReader(conn1.getInputStream())
+        connection.setRequestMethod("GET");
+
+        BufferedReader reader = new BufferedReader(
+                new InputStreamReader(connection.getInputStream())
         );
 
-        StringBuilder response1 = new StringBuilder();
-        String line1;
-        while ((line1 = reader1.readLine()) != null) {
-            response1.append(line1);
+        StringBuilder response = new StringBuilder();
+
+        String line;
+
+        while ((line = reader.readLine()) != null) {
+            response.append(line);
         }
-        reader1.close();
 
-        String firstJson = response1.toString();
+        reader.close();
 
-        // EXTRAER URL DE "datos"
+        return response.toString();
+    }
+
+    private String extractDataUrl(String json) {
         String marker = "\"datos\" : \"";
-        int start = firstJson.indexOf(marker);
+        int start = json.indexOf(marker);
 
         if (start == -1) {
             marker = "\"datos\":\"";
-            start = firstJson.indexOf(marker);
+            start = json.indexOf(marker);
         }
 
         if (start == -1) {
-            throw new RuntimeException("No se encontró el campo 'datos' en la respuesta: " + firstJson);
+            throw new RuntimeException(
+                    "No se encontró el campo 'datos' en la respuesta: " + json
+            );
         }
 
         start += marker.length();
-        int end = firstJson.indexOf("\"", start);
+
+        int end = json.indexOf("\"", start);
 
         if (end == -1) {
-            throw new RuntimeException("No se pudo extraer la URL de 'datos'");
+            throw new RuntimeException(
+                    "No se pudo extraer la URL de 'datos'"
+            );
         }
 
-        String dataUrl = firstJson.substring(start, end);
+        return json.substring(start, end);
+    }
 
-        // SEGUNDA LLAMADA
-        HttpURLConnection conn2 = (HttpURLConnection) new URL(dataUrl).openConnection();
-        conn2.setRequestMethod("GET");
+    public String fetchBeachInfoJson() throws Exception {
+        String apiKey = getApiKey();
 
-        BufferedReader reader2 = new BufferedReader(
-                new InputStreamReader(conn2.getInputStream())
-        );
+        String endpoint =
+                "https://opendata.aemet.es/opendata/api/prediccion/especifica/playa/3501601/?api_key="
+                        + apiKey;
 
-        StringBuilder response2 = new StringBuilder();
-        String line2;
-        while ((line2 = reader2.readLine()) != null) {
-            response2.append(line2);
-        }
-        reader2.close();
+        String firstJson = fetchResponse(endpoint);
 
-        return response2.toString();
+        String dataUrl = extractDataUrl(firstJson);
+
+        return fetchResponse(dataUrl);
     }
 }
