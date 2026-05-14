@@ -16,6 +16,10 @@ public class EventStoreWriter {
     private static final String ROOT = "eventstore";
 
     private final Gson gson = new Gson();
+    private static final DateTimeFormatter DATE_FORMAT =
+            DateTimeFormatter.ofPattern("yyyyMMdd");
+    private static final String EVENT_STORED_MESSAGE =
+            "Event stored in: ";
 
     public void write(String topic, String eventJson) throws IOException {
 
@@ -23,7 +27,7 @@ public class EventStoreWriter {
 
         String date = Instant.parse(event.getTs())
                 .atZone(ZoneOffset.UTC)
-                .format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+                .format(DATE_FORMAT);
 
         Path directory = Path.of(
                 ROOT,
@@ -42,6 +46,6 @@ public class EventStoreWriter {
                 StandardOpenOption.APPEND
         );
 
-        System.out.println("Event stored in: " + file);
+        System.out.println(EVENT_STORED_MESSAGE + file);
     }
 }
