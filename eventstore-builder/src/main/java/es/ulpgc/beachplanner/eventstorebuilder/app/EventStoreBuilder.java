@@ -12,6 +12,13 @@ public class EventStoreBuilder {
 
     private final String topicName;
     private final EventStoreWriter writer;
+    private static final String SUBSCRIPTION_SUFFIX =
+            "-events-subscription";
+    private static final String EVENT_RECEIVED_MESSAGE =
+            "Event received from topic: ";
+
+    private static final String LISTENING_MESSAGE =
+            "Event Store Builder listening to topic: ";
 
     public EventStoreBuilder(String topicName, EventStoreWriter writer) {
         this.topicName = topicName;
@@ -30,7 +37,7 @@ public class EventStoreBuilder {
 
             MessageConsumer consumer = session.createDurableSubscriber(
                     topic,
-                    topicName + "-events-subscription"
+                    topicName + SUBSCRIPTION_SUFFIX
             );
 
             consumer.setMessageListener(message -> {
@@ -38,8 +45,7 @@ public class EventStoreBuilder {
                     if (message instanceof TextMessage textMessage) {
                         String eventJson = textMessage.getText();
 
-                        System.out.println("Event received from topic: " + topicName);
-
+                        System.out.println(EVENT_RECEIVED_MESSAGE + topicName);
                         writer.write(topicName, eventJson);
                     }
                 } catch (Exception e) {
@@ -49,7 +55,7 @@ public class EventStoreBuilder {
 
             connection.start();
 
-            System.out.println("Event Store Builder listening to topic: " + topicName);
+            System.out.println(LISTENING_MESSAGE + topicName);
             System.out.println("Press ENTER to stop...");
             System.in.read();
 
