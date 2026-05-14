@@ -390,8 +390,12 @@ BeachInfoEventPublisher --> BeachInfoRecord
 
 The application is currently executed manually by launching the modules independently in the following order:
 
-1. Run the `Main` class from `business-unit`
-2. Run the `Main` class from `weather-module`
-3. Run the `Main` class from `beachinfo-module`
+1. Run ActiveMQ.
+2. Run the `Main` class from `eventstore-builder`.
+3. Run the `Main` class from `business-unit`.
+4. Run the `Main` class from `weather-module`.
+5. Run the `Main` class from `beachinfo-module`.
 
-The producer modules publish events through ActiveMQ, while the business unit consumes them asynchronously and updates the datamart with the generated recommendations.
+The producer modules publish events through ActiveMQ.  
+The `eventstore-builder` listens to the topics and stores the received events in the event store.  
+The `business-unit` consumes the events asynchronously and updates the datamart with the generated recommendations.
