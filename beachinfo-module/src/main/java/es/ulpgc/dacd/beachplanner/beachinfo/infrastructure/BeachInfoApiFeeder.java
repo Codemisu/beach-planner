@@ -23,6 +23,11 @@ public class BeachInfoApiFeeder implements BeachInfoFeeder {
         this.eventFactory = eventFactory;
         this.publisher = publisher;
     }
+    private String serialize(Event event) {
+        Gson gson = new Gson();
+
+        return gson.toJson(event);
+    }
 
     @Override
     public List<BeachInfoRecord> fetch() throws Exception {
@@ -38,9 +43,7 @@ public class BeachInfoApiFeeder implements BeachInfoFeeder {
 
         Event event = eventFactory.create(json);
 
-        Gson gson = new Gson();
-
-        String eventJson = gson.toJson(event);
+        String eventJson = serialize(event);
 
         publisher.publish("BeachInfo", eventJson);
 

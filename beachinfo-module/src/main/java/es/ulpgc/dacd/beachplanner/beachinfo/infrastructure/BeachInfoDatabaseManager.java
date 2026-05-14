@@ -7,12 +7,7 @@ import java.sql.Statement;
 public class BeachInfoDatabaseManager {
 
     private static final String URL = "jdbc:sqlite:beachinfo.db";
-
-    public void initializeDatabase() {
-        try (Connection conn = DriverManager.getConnection(URL);
-             Statement stmt = conn.createStatement()) {
-
-            String sql = """
+    private static final String CREATE_TABLE = """
                 CREATE TABLE IF NOT EXISTS beach_info (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     beach_name TEXT,
@@ -24,8 +19,11 @@ public class BeachInfoDatabaseManager {
                     captured_at TEXT
                 )
             """;
+    public void initializeDatabase() {
+        try (Connection conn = DriverManager.getConnection(URL);
+             Statement stmt = conn.createStatement()) {
 
-            stmt.execute(sql);
+            stmt.execute(CREATE_TABLE);
 
         } catch (Exception e) {
             e.printStackTrace();
