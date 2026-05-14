@@ -25,14 +25,14 @@ public class EventStoreWriter {
 
         Event event = gson.fromJson(eventJson, Event.class);
 
-        String date = Instant.parse(event.getTs())
+        String date = Instant.parse(event.ts())
                 .atZone(ZoneOffset.UTC)
                 .format(DATE_FORMAT);
 
         Path directory = Path.of(
                 ROOT,
                 topic,
-                event.getSs()
+                event.ss()
         );
 
         Files.createDirectories(directory);

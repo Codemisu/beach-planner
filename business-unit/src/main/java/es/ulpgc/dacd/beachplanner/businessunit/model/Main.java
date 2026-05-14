@@ -6,9 +6,10 @@ import es.ulpgc.dacd.beachplanner.businessunit.service.Datamart;
 import es.ulpgc.dacd.beachplanner.businessunit.service.DatamartUpdater;
 import es.ulpgc.dacd.beachplanner.businessunit.service.RecommendationService;
 import es.ulpgc.dacd.beachplanner.common.model.Event;
-import java.util.Scanner;
+
 import javax.jms.JMSException;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
@@ -17,6 +18,9 @@ public class Main {
 
     private static final String WEATHER_TOPIC = "Weather";
     private static final String BEACH_INFO_TOPIC = "BeachInfo";
+    private static final String LAS_CANTERAS = "Las Canteras";
+    private static final String LAS_ALCARAVANERAS = "Las Alcaravaneras";
+    private static final String LA_LAJA = "La Laja";
 
     public static void main(String[] args) throws JMSException {
 
@@ -30,30 +34,8 @@ public class Main {
         for (Event event : historicalEvents) {
             updater.update(event, datamart);
         }
-        Scanner scanner = new Scanner(System.in);
 
-        System.out.println("\nSeleccione una playa:");
-        System.out.println("1. Las Canteras");
-        System.out.println("2. Las Alcaravaneras");
-        System.out.println("3. La Laja");
-
-        String option = scanner.nextLine();
-
-        String selectedBeach;
-
-        switch (option) {
-            case "1":
-                selectedBeach = "Las Canteras";
-                break;
-            case "2":
-                selectedBeach = "Las Alcaravaneras";
-                break;
-            case "3":
-                selectedBeach = "La Laja";
-                break;
-            default:
-                selectedBeach = "Las Canteras";
-        }
+        String selectedBeach = selectBeach();
 
         printRecommendation(
                 datamart,
@@ -93,9 +75,39 @@ public class Main {
         });
 
         System.out.println("Business Unit is running...");
-        System.out.println("Listening topics: " + WEATHER_TOPIC + " and " + BEACH_INFO_TOPIC);
+        System.out.println(
+                "Listening topics: "
+                        + WEATHER_TOPIC
+                        + " and "
+                        + BEACH_INFO_TOPIC
+        );
     }
 
+    private static String selectBeach() {
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("\nSeleccione una playa:");
+        System.out.println("1. Las Canteras");
+        System.out.println("2. Las Alcaravaneras");
+        System.out.println("3. La Laja");
+
+        String option = scanner.nextLine();
+
+        switch (option) {
+            case "1":
+                return LAS_CANTERAS;
+
+            case "2":
+                return LAS_ALCARAVANERAS;
+
+            case "3":
+                return LA_LAJA;
+
+            default:
+                return LAS_CANTERAS;
+        }
+    }
 
     private static void printRecommendation(
             Datamart datamart,
@@ -106,6 +118,7 @@ public class Main {
         System.out.println("\n===== BEACH PLANNER RECOMMENDATIONS =====");
 
         BeachState state = datamart.get(beach);
+
         if (state == null) {
             System.out.println("No hay datos disponibles para " + beach);
             return;

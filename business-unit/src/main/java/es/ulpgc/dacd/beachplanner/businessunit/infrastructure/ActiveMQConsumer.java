@@ -14,6 +14,11 @@ public class ActiveMQConsumer {
     private final String brokerUrl;
     private final String topicName;
     private final Gson gson = new Gson();
+    private static final String LISTENING_MESSAGE =
+            "Listening ActiveMQ topic: ";
+
+    private static final String ERROR_MESSAGE =
+            "Error processing ActiveMQ message: ";
 
     public ActiveMQConsumer(String brokerUrl, String topicName) {
         this.brokerUrl = brokerUrl;
@@ -46,10 +51,10 @@ public class ActiveMQConsumer {
                 }
 
             } catch (Exception e) {
-                System.out.println("Error processing ActiveMQ message: " + e.getMessage());
+                System.out.println(ERROR_MESSAGE + e.getMessage());
             }
         });
 
-        System.out.println("Listening ActiveMQ topic: " + topicName);
+        System.out.println(LISTENING_MESSAGE + topicName);
     }
 }

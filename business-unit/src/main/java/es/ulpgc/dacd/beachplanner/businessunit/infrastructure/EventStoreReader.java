@@ -12,6 +12,21 @@ public class EventStoreReader {
 
     private final Path eventStorePath;
     private final Gson gson = new Gson();
+    private static final String EVENTS_EXTENSION =
+            ".events";
+
+    private static final String PATH_NOT_EXISTS_MESSAGE =
+            "Event store path does not exist: ";
+
+    private static final String ERROR_READING_STORE_MESSAGE =
+            "Error reading event store: ";
+
+    private static final String INVALID_JSON_MESSAGE =
+            "Invalid JSON: ";
+
+    private static final String ERROR_READING_FILE_MESSAGE =
+            "Error reading file ";
+
 
     public EventStoreReader(String eventStorePath) {
         this.eventStorePath = Paths.get(eventStorePath);
@@ -22,7 +37,7 @@ public class EventStoreReader {
         List<Event> events = new ArrayList<>();
 
         if (!Files.exists(eventStorePath)) {
-            System.out.println("Event store path does not exist: " + eventStorePath);
+            System.out.println(PATH_NOT_EXISTS_MESSAGE + eventStorePath);
             return events;
         }
 
@@ -30,11 +45,11 @@ public class EventStoreReader {
 
             files
                     .filter(Files::isRegularFile)
-                    .filter(path -> path.toString().endsWith(".events"))
+                    .filter(path -> path.toString().endsWith(EVENTS_EXTENSION))
                     .forEach(path -> readFile(path, events));
 
         } catch (IOException e) {
-            System.out.println("Error reading event store: " + e.getMessage());
+            System.out.println(ERROR_READING_STORE_MESSAGE + e.getMessage());
         }
 
         return events;
@@ -60,13 +75,18 @@ public class EventStoreReader {
 
                     } catch (Exception e) {
 
-                        System.out.println("Invalid JSON: " + line);
+                        System.out.println(INVALID_JSON_MESSAGE + line);
                     }
                 }
             }
 
         } catch (IOException e) {
-            System.out.println("Error reading file " + filePath + ": " + e.getMessage());
+            System.out.println(
+                    ERROR_READING_FILE_MESSAGE
+                            + filePath
+                            + ": "
+                            + e.getMessage()
+            );
         }
     }
 }

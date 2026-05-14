@@ -6,6 +6,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecommendationService {
+    private static final String BEGINNER =
+            "Principiante";
+
+    private static final String INTERMEDIATE =
+            "Intermedio";
+
+    private static final String ADVANCED =
+            "Avanzado";
+    private static final int STRONG_WIND = 25;
+    private static final int HIGH_UV = 8;
+    private static final int HIGH_OCCUPANCY = 85;
 
     public String recommend(BeachState state) {
 
@@ -63,7 +74,7 @@ public class RecommendationService {
                 .append(state.getWind())
                 .append(" km/h\n");
 
-        if (state.getWind() > 25) {
+        if (state.getWind() > STRONG_WIND) {
             result.append("- Aviso: viento fuerte, precaución con sombrillas y toallas\n");
         }
 
@@ -87,7 +98,7 @@ public class RecommendationService {
                     .append("\n");
         }
 
-        if (state.getUvIndex() >= 8) {
+        if (state.getUvIndex() >= HIGH_UV) {
             result.append("- Recomendación: usar protección solar alta\n");
         }
 
@@ -97,7 +108,7 @@ public class RecommendationService {
                     .append("%\n");
         }
 
-        if (state.getOccupancy() > 85) {
+        if (state.getOccupancy() > HIGH_OCCUPANCY ) {
             result.append("- Playa muy ocupada\n");
         }
 
@@ -136,18 +147,18 @@ public class RecommendationService {
         String waveState = state.getWaveState().toLowerCase();
 
         if (waveState.contains("débil") || waveState.contains("flojo") || waveState.contains("marejadilla")) {
-            return "Principiante";
+            return BEGINNER;
         }
 
         if (waveState.contains("moderado") || waveState.contains("marejada")) {
-            return "Intermedio";
+            return INTERMEDIATE;
         }
 
         if (waveState.contains("fuerte") || waveState.contains("gruesa") || state.getWind() > 25) {
-            return "Avanzado";
+            return ADVANCED;
         }
 
-        return "Intermedio";
+        return INTERMEDIATE ;
     }
 
     private String getEquipment(BeachState state) {
@@ -164,7 +175,7 @@ public class RecommendationService {
             equipment.add("neopreno");
         }
 
-        if (state.getWind() > 25 || getSurfLevel(state).equals("Avanzado")) {
+        if (state.getWind() > STRONG_WIND || getSurfLevel(state).equals(ADVANCED)) {
             equipment.add("casco recomendado");
         }
 
@@ -193,29 +204,5 @@ public class RecommendationService {
         return waveState.contains("fuerte")
                 || waveState.contains("gruesa")
                 || waveState.contains("muy fuerte");
-    }
-
-    private String formatWaterTemperature(BeachState state) {
-        if (state.getWaterTemperature() <= 0) {
-            return "no disponible";
-        }
-
-        return state.getWaterTemperature() + "ºC";
-    }
-
-    private String formatUvIndex(BeachState state) {
-        if (state.getUvIndex() <= 0) {
-            return "no disponible";
-        }
-
-        return String.valueOf(state.getUvIndex());
-    }
-
-    private String formatOccupancy(BeachState state) {
-        if (state.getOccupancy() <= 0) {
-            return "no disponible";
-        }
-
-        return state.getOccupancy() + "%";
     }
 }
