@@ -118,11 +118,13 @@ WeatherPublisher --> WeatherEventBuilder
 WeatherEventBuilder --> WeatherRecord
 ```
 
-# Beachinfo Module
+
 
 The beachinfo module is responsible for retrieving beach information from the external API, mapping it into domain records, storing it and publishing beach information events.
 
-## Class Diagram
+## Class Diagram beachInfo module
+
+The beachinfo module is responsible for retrieving beach information from the external API, mapping it into domain records, storing it and publishing beach information events.
 
 ```mermaid
 classDiagram
