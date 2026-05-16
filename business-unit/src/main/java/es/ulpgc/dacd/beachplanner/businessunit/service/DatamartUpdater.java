@@ -57,50 +57,56 @@ public class DatamartUpdater {
     }
 
     private void updateBeachInfo(Event event, Datamart datamart) {
-        JsonArray array = JsonParser
-                .parseString(event.payload().toString())
-                .getAsJsonArray();
+        //System.out.println(event.payload());
+        try {
+            JsonArray array = JsonParser
+                    .parseString(event.payload().toString())
+                    .getAsJsonArray();
 
-        JsonObject beachInfo = array.get(0).getAsJsonObject();
+            JsonObject beachInfo = array.get(0).getAsJsonObject();
 
-        String beach = beachInfo.get("nombre").getAsString();
+            String beach = beachInfo.get("nombre").getAsString();
 
-        JsonObject prediction =
-                beachInfo.getAsJsonObject("prediccion")
-                        .getAsJsonArray("dia")
-                        .get(0)
-                        .getAsJsonObject();
+            JsonObject prediction =
+                    beachInfo.getAsJsonObject("prediccion")
+                            .getAsJsonArray("dia")
+                            .get(0)
+                            .getAsJsonObject();
 
-        String skyState =
-                prediction.getAsJsonObject("estadoCielo")
-                        .get("descripcion1")
-                        .getAsString();
+            String skyState =
+                    prediction.getAsJsonObject("estadoCielo")
+                            .get("descripcion1")
+                            .getAsString();
 
-        String waveState =
-                prediction.getAsJsonObject("oleaje")
-                        .get("descripcion1")
-                        .getAsString();
+            String waveState =
+                    prediction.getAsJsonObject("oleaje")
+                            .get("descripcion1")
+                            .getAsString();
 
-        int uvIndex =
-                prediction.getAsJsonObject("uvMax")
-                        .get("valor1")
-                        .getAsInt();
+            int uvIndex =
+                    prediction.getAsJsonObject("uvMax")
+                            .get("valor1")
+                            .getAsInt();
 
-        double waterTemperature =
-                prediction.getAsJsonObject("tAgua")
-                        .get("valor1")
-                        .getAsDouble();
+            double waterTemperature =
+                    prediction.getAsJsonObject("tAgua")
+                            .get("valor1")
+                            .getAsDouble();
 
-        BeachState state = datamart.get(beach);
+            BeachState state = datamart.get(beach);
 
-        if (state == null) {
-            state = new BeachState(beach, 0, 0, 0, 0);
-            datamart.update(state);
+            if (state == null) {
+                state = new BeachState(beach, 0, 0, 0, 0);
+                datamart.update(state);
+            }
+
+            state.setSkyState(skyState);
+            state.setWaveState(waveState);
+            state.setUvIndex(uvIndex);
+            state.setWaterTemperature(waterTemperature);
         }
-
-        state.setSkyState(skyState);
-        state.setWaveState(waveState);
-        state.setUvIndex(uvIndex);
-        state.setWaterTemperature(waterTemperature);
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }

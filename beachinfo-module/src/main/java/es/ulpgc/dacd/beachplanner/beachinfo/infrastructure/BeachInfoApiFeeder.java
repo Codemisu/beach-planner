@@ -55,6 +55,7 @@ public class BeachInfoApiFeeder implements BeachInfoFeeder {
                 publisher.publish("BeachInfo", eventJson);
 
                 records.addAll(mapper.map(json));
+                Thread.sleep(2000);
 
             } catch (Exception e) {
 

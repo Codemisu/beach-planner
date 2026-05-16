@@ -45,7 +45,7 @@ public class WeatherPublisher implements WeatherEventPublisher {
 
             producer.send(message);
 
-            System.out.println("Evento enviado a ActiveMQ:");
+            //System.out.println("Evento enviado a ActiveMQ:");
             System.out.println(json);
 
         } catch (Exception e) {
