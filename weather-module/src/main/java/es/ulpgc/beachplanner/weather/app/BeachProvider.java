@@ -9,8 +9,8 @@ public class BeachProvider {
     public List<Beach> getBeaches() {
         return List.of(
                 new Beach("Las Canteras", 28.1413, -15.4366),
-                new Beach("Las Alcaravaneras", 28.1316, -15.4303),
-                new Beach("La Laja", 28.0606, -15.4140)
+                new Beach("Melenara", 27.9940, -15.3742),
+                new Beach("Playa del Inglés", 27.7567, -15.5787)
         );
     }
 }
