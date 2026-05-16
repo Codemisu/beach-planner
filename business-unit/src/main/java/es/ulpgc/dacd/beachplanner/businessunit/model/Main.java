@@ -19,8 +19,8 @@ public class Main {
     private static final String WEATHER_TOPIC = "Weather";
     private static final String BEACH_INFO_TOPIC = "BeachInfo";
     private static final String LAS_CANTERAS = "Las Canteras";
-    private static final String LAS_ALCARAVANERAS = "Las Alcaravaneras";
-    private static final String LA_LAJA = "La Laja";
+    private static final String PLAYA_DEL_INGLES = "Playa del Inglés";
+    private static final String MELENARA = "Melenara";
 
     public static void main(String[] args) throws JMSException {
 
@@ -89,8 +89,8 @@ public class Main {
 
         System.out.println("\nSeleccione una playa:");
         System.out.println("1. Las Canteras");
-        System.out.println("2. Las Alcaravaneras");
-        System.out.println("3. La Laja");
+        System.out.println("2. Playa del Inglés");
+        System.out.println("3. Melenara");
 
         String option = scanner.nextLine();
 
@@ -99,10 +99,10 @@ public class Main {
                 return LAS_CANTERAS;
 
             case "2":
-                return LAS_ALCARAVANERAS;
+                return PLAYA_DEL_INGLES;
 
             case "3":
-                return LA_LAJA;
+                return MELENARA;
 
             default:
                 return LAS_CANTERAS;

@@ -14,6 +14,7 @@ public class BeachInfoApiFeeder implements BeachInfoFeeder {
     private final BeachInfoEventFactory eventFactory;
 
     private final BeachInfoEventPublisher publisher;
+
     public BeachInfoApiFeeder(BeachInfoApiClient apiClient,
                               BeachInfoMapper mapper,
                               BeachInfoEventFactory eventFactory,
@@ -23,6 +24,7 @@ public class BeachInfoApiFeeder implements BeachInfoFeeder {
         this.eventFactory = eventFactory;
         this.publisher = publisher;
     }
+
     private String serialize(Event event) {
         Gson gson = new Gson();
 
@@ -32,21 +34,39 @@ public class BeachInfoApiFeeder implements BeachInfoFeeder {
     @Override
     public List<BeachInfoRecord> fetch() throws Exception {
 
-        String json;
+        List<BeachInfoRecord> records = new java.util.ArrayList<>();
 
-        try {
-            json = apiClient.fetchBeachInfoJson();
-        } catch (Exception e) {
-            System.out.println("Error fetching AEMET beach data: " + e.getMessage());
-            return List.of();
+        String[] beachIds = {
+                "3501601", // Las Canteras
+                "3501902", // Playa del Inglés
+                "3502601"  // Melenara
+        };
+
+        for (String beachId : beachIds) {
+
+            try {
+
+                String json = apiClient.fetchBeachInfoJson(beachId);
+
+                Event event = eventFactory.create(json);
+
+                String eventJson = serialize(event);
+
+                publisher.publish("BeachInfo", eventJson);
+
+                records.addAll(mapper.map(json));
+
+            } catch (Exception e) {
+
+                System.out.println(
+                        "Error fetching AEMET beach data for "
+                                + beachId
+                                + ": "
+                                + e.getMessage()
+                );
+            }
         }
 
-        Event event = eventFactory.create(json);
-
-        String eventJson = serialize(event);
-
-        publisher.publish("BeachInfo", eventJson);
-
-        return mapper.map(json);
+        return records;
     }
 }

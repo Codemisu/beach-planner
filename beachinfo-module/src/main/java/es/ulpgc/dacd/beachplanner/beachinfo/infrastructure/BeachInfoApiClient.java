@@ -76,11 +76,13 @@ public class BeachInfoApiClient {
         return json.substring(start, end);
     }
 
-    public String fetchBeachInfoJson() throws Exception {
+    public String fetchBeachInfoJson(String beachId) throws Exception {
         String apiKey = getApiKey();
 
         String endpoint =
-                "https://opendata.aemet.es/opendata/api/prediccion/especifica/playa/3501601/?api_key="
+                "https://opendata.aemet.es/opendata/api/prediccion/especifica/playa/"
+                        + beachId
+                        + "/?api_key="
                         + apiKey;
 
         String firstJson = fetchResponse(endpoint);
