@@ -28,11 +28,14 @@ public class BeachInfoApiClient {
     private String fetchResponse(String endpoint) throws Exception {
         HttpURLConnection connection =
                 (HttpURLConnection) new URL(endpoint).openConnection();
-
+        connection.setRequestProperty("User-Agent", "Mozilla/5.0");
         connection.setRequestMethod("GET");
 
         BufferedReader reader = new BufferedReader(
-                new InputStreamReader(connection.getInputStream())
+                new InputStreamReader(
+                        connection.getInputStream(),
+                        java.nio.charset.StandardCharsets.ISO_8859_1
+                )
         );
 
         StringBuilder response = new StringBuilder();

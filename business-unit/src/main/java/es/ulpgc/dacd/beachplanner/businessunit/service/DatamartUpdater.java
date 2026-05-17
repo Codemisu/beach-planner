@@ -28,6 +28,7 @@ public class DatamartUpdater {
 
         String beach =
                 payload.get("beach").getAsString();
+        //System.out.println("Weather beach: " + beach);
 
         double wind =
                 payload.get("windSpeed").getAsDouble();
@@ -66,6 +67,18 @@ public class DatamartUpdater {
             JsonObject beachInfo = array.get(0).getAsJsonObject();
 
             String beach = beachInfo.get("nombre").getAsString();
+
+            if (beach.equalsIgnoreCase("El Ingl�s")) {
+                beach = "Playa del Inglés";
+            }
+            if (beach.equalsIgnoreCase("Las Canteras")) {
+                beach = "Las Canteras";
+            }
+
+            if (beach.equalsIgnoreCase("Melenara")) {
+                beach = "Melenara";
+            }
+            //System.out.println("BeachInfo beach: " + beach);
 
             JsonObject prediction =
                     beachInfo.getAsJsonObject("prediccion")

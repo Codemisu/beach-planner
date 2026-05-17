@@ -48,6 +48,9 @@ public class BeachInfoApiFeeder implements BeachInfoFeeder {
 
                 String json = apiClient.fetchBeachInfoJson(beachId);
 
+                System.out.println("Beach ID: " + beachId);
+                System.out.println(json.substring(0, Math.min(json.length(), 300)));
+
                 Event event = eventFactory.create(json);
 
                 String eventJson = serialize(event);
@@ -55,7 +58,7 @@ public class BeachInfoApiFeeder implements BeachInfoFeeder {
                 publisher.publish("BeachInfo", eventJson);
 
                 records.addAll(mapper.map(json));
-                Thread.sleep(2000);
+                Thread.sleep(4000);
 
             } catch (Exception e) {
 
